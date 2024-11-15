@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/E13_Webpack.iml" filepath="$PROJECT_DIR$/.idea/E13_Webpack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/react-webinar.iml" filepath="$PROJECT_DIR$/.idea/react-webinar.iml" />
     </modules>
   </component>
 </project>
