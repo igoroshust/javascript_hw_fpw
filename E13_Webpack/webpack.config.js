@@ -2,8 +2,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-// const ESLintPlugin = require('eslint-webpack-plugin');
-// const StylelintPlugin = require('stylelint-webpack-plugin');
 // const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
@@ -45,8 +43,6 @@ module.exports = {
     plugins: [ new HtmlWebpackPlugin({template: 'src/index.pug'}),
                new MiniCssExtractPlugin(),
                new TerserWebpackPlugin(),
-              // new ESLintPlugin(),
-              // new StylelintPlugin()
               // new OptimizeCssAssetsWebpackPlugin()
              ],
 
