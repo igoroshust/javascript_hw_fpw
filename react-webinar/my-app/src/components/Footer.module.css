@@ -1,4 +1,4 @@
-:global .footer {
+.footer {
     background-color: black;
     color: #fff;
     height: 30px;
@@ -8,7 +8,7 @@
     padding: 30px;
 }
 
-:global .subtitle {
+.subtitle {
     display: flex;
     align-items: center;
     justify-content: center;
