@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d1d184-757f-4406-97cf-c968c0004f42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +36,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Igor\JavaScript\react\react-webinar\my-app\src\components" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Section" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Main" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Label" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Header" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Footer" />
     </key>
   </component>
   <component name="SharedIndexes">

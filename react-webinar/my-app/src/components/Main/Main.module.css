@@ -1,4 +1,4 @@
-:global .main {
+.main {
     padding-top: 40px;
     padding-bottom: 40px;
     display: flex;
@@ -7,11 +7,11 @@
     justify-content: center;
 }
 
-label {
+.label {
     color: red;
 }
 
-input {
+.input {
     padding: 20px;
     display: block;
 }
