@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
+import Link1 from "./components/Link1/Link1";
 import Section from "./components/Section/Section";
 import Footer from "./components/Footer/Footer";
 // import Home from "./components/Home/Home";
@@ -33,6 +34,7 @@ function App() {
         </nav>
             <Header />
             <Section />
+            <Link1 />
             <Main name="Буквы" />
             <Main name="Не буквы"/>
             <Main name="Снова буквы"/>
