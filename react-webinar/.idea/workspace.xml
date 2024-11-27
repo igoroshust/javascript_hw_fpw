@@ -26,21 +26,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Igor/JavaScript/javascript_hw_fpw/react-webinar"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Igor/JavaScript/javascript_hw_fpw/react-webinar&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\__tests__" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app" />
+      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar" />
       <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Section" />
       <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Main" />
-      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Label" />
-      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Header" />
-      <recent name="C:\Users\Igor\JavaScript\javascript_hw_fpw\react-webinar\my-app\src\components\Footer" />
     </key>
   </component>
   <component name="SharedIndexes">
