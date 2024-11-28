@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Link1 from "./components/Link1/Link1";
-import Section from "./components/Section/Section";
+import Counter from "./components/Counter/Counter";
+import ClassCounter from "./components/Counter/ClassCounter";
 import Footer from "./components/Footer/Footer";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
@@ -25,6 +26,9 @@ import "./App.css";
 //});
 
 function App() {
+
+    const state = useState()
+
   return (
   <>
     <div className="App">
@@ -33,7 +37,7 @@ function App() {
           <Link to="/users">Users</Link>
         </nav>
             <Header />
-            <Section />
+            <ClassCounter /> <br />
             <Link1 />
             <Main name="Буквы" />
             <Main name="Не буквы"/>
