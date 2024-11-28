@@ -7,6 +7,7 @@ import Counter from "./components/Counter/Counter";
 import ClassCounter from "./components/Counter/ClassCounter";
 import Footer from "./components/Footer/Footer";
 import PostItem from "./components/PostItem/PostItem";
+import PostList from "./components/PostList/PostList";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
 import "./styles/App.css";
@@ -31,20 +32,30 @@ ui.initOAuth({
 
 function App() {
 
-    const state = useState()
+    /* Состояние с массивом постов */
+    const [posts, setPosts] = useState([
+        {id: 1, title: 'JavaScript', body: 'Description'},
+        {id: 2, title: 'HTML', body: 'Description-1'},
+        {id: 3, title: 'CSS', body: 'Description-2'}
+    ])
 
+    const [posts1, setPosts1] = useState([
+        {id: 4, title: 'Python', body: 'Description-3'},
+        {id: 5, title: 'PHP', body: 'Description-4'},
+        {id: 6, title: 'Ruby', body: 'Description-5'}
+    ])
+
+    /* Массив обычных объектов необходимо преобразовать в массив React-элементов (с помощью map) */
   return (
-  <>
-    <div className="App">
-         <Header />
-        <div className="content">
-            <ClassCounter />
-            <PostItem post={ {id: 1, title: 'JavaScript', body: 'Description'} } />
-            <PostItem post={ {id: 2, title: 'Python', body: 'Description-1'} } />
-            <PostItem post={ {id: 3, title: 'Ruby', body: 'Description-2'} } />
+        <div className="App">
+           <Header />
+            <div className="content">
+                <ClassCounter /> <br />
+                <PostList posts={posts} title={"Посты про Frontend"} /> <br />
+                <PostList posts={posts1} title={"Посты про Backend"} /> <br />
+            </div>
+            <Footer />
         </div>
-    </div>
-    </>
   );
 }
 
