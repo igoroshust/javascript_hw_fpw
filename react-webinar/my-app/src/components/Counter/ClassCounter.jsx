@@ -26,11 +26,11 @@ class ClassCounter extends React.Component {
 
     render() {
         return (
-            <>
+            <div className="counter">
                 <h1>{this.state.count}</h1> {/* Внутри класса использует this */}
                 <button onClick={this.plus}>Plus</button>
                 <button onClick={this.minus}>Minus</button>
-            </>
+            </div>
         );
     }
 }

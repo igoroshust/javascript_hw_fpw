@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.content {
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.counter {
+    display: block;
+    text-align: center;
+}
+
+.post {
+    display: flex;
+    padding: 15px;
+    border: 2px solid teal;
+    margin-top: 15px;
+
+    /* Переносим кнопку в правый угол */
+    justify-content: space-between;
+    align-items: center;
+}
