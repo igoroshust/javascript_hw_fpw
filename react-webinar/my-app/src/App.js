@@ -94,12 +94,7 @@ function App() {
                     setFilter={setFilter}
                 />
 
-
-                {/* Условная отрисовка (посты не найдены) */}
-                {sortedAndSearchedPosts.length !== 0
-                    ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
-                    : <h2 style={{ textAlign: 'center' }}>Посты не найдены</h2>
-                }
+                <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
                 <br />
             </div>
             <Footer />

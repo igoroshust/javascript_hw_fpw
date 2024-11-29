@@ -6,6 +6,13 @@ import PostItem from '../PostItem/PostItem';
 то можно из props сразу вытащить нужное для нас поле */
 const PostList = ({ posts, title, remove }) => {
 
+    /* Условная отрисовка (посты не найдены) */
+    if(!posts.length) {
+        return (
+            <h1 style={{ textAlign: 'center' }}>Посты не найдены!</h1>
+        )
+    }
+
     return (
     <>
         <h2 style={{ textAlign: 'center' }}>{ title }</h2>
