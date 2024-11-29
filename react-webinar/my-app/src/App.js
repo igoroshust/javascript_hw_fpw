@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { Link } from 'react-router-dom';
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import PostItem from "./components/PostItem/PostItem";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
+import PostFilter from "./components/PostFilter/PostFilter";
 import MySelect from "./components/UI/Select/MySelect";
 import MyInput from "./components/UI/Input/MyInput";
 // import Home from "./components/Home/Home";
@@ -51,23 +52,22 @@ function App() {
 
 
     /* Состояние селекта */
-    const [selectedSort, setSelectedSort] = useState('') // сортировка
-    const [searchQuery, setSearchQuery] = useState('') // поиск
+    const [filter, setFilter] = useState({sort: '', query: ''})
 
-    function getSortedPosts() {
+    const sortedPosts = useMemo(() => {
         console.log('Отработала функция sortedPosts') // отслеживаем вызов функции
-        if(selectedSort) { // если строка не пустая
-            return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort])) // возвращаем отсортированный массив
+        if(filter.sort) { // если строка не пустая
+            return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort])) // возвращаем отсортированный массив
         }
         return posts; // обычный массив постов
-    }
 
-    const sortedPosts = getSortedPosts()
+    }, [filter.sort, posts]) // callback(возвращ. результат вычислений) и массив зависимостей (deps). callback вызывается, если хоть одна из зависимостей поменяет значение
 
-    // сортировка массива
-    const sortPosts = (sort) => {
-        setSelectedSort(sort);
-    }
+    /* Поиск (на основании отсортированного массива) */
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+    }, [filter.query, sortedPosts]) // в массив зависимостей попадает поисковая строка и отсортированный массив
+
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
@@ -89,28 +89,15 @@ function App() {
                 <hr style={{ margin: '15px 0' }} />
 
                 {/* Сортировка постов. В onChange передаём то, что приходит из самого селекта  */}
-                <div>
-                    <MyInput
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        placeholder="Поиск..."
-                     />
-
-                    <MySelect
-                        value={selectedSort}
-                        onChange={sortPosts}
-                        defaultValue="Сортировка"
-                        options={[
-                            {value: 'title', name: 'По названию'},
-                            {value: 'body', name: 'По описанию'},
-                        ]}
-                    />
-                </div>
+                <PostFilter
+                    filter={filter}
+                    setFilter={setFilter}
+                />
 
 
                 {/* Условная отрисовка (посты не найдены) */}
-                {posts.length !== 0
-                    ? <PostList remove={removePost} posts={sortedPosts} title={"Список постов"} />
+                {sortedAndSearchedPosts.length !== 0
+                    ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
                     : <h2 style={{ textAlign: 'center' }}>Посты не найдены</h2>
                 }
                 <br />
