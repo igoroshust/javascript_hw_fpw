@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import MyButton from '../UI/Button/MyButton';
 
-/*
-props - входные данные. Аргумент функции, куда можно передавать что-то извне.
-*/
+/* props - входные данные. Аргумент функции, куда можно передавать что-то извне. */
 
 const PostItem = (props) => {
 
@@ -16,7 +15,9 @@ const PostItem = (props) => {
             </div>
 
             <div className="post__btns">
-                <button>Удалить</button>
+                <MyButton onClick={() => props.remove(props.post)}>  {/* ПО ID пост удаляется из массива */}
+                    Удалить
+                </MyButton>
             </div>
         </div>
     );

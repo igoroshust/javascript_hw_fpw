@@ -8,8 +8,7 @@ import ClassCounter from "./components/Counter/ClassCounter";
 import Footer from "./components/Footer/Footer";
 import PostItem from "./components/PostItem/PostItem";
 import PostList from "./components/PostList/PostList";
-import MyButton from "./components/UI/Button/MyButton";
-import MyInput from "./components/UI/Input/MyInput";
+import PostForm from "./components/PostForm/PostForm";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
 import "./styles/App.css";
@@ -38,66 +37,44 @@ function App() {
     const [posts, setPosts] = useState([
         {id: 1, title: 'JavaScript', body: 'Description'},
         {id: 2, title: 'HTML', body: 'Description-1'},
-        {id: 3, title: 'CSS', body: 'Description-2'}
+        {id: 3, title: 'CSS', body: 'Description-2'},
+        {id: 4, title: 'Python', body: 'Description-3'},
+        {id: 5, title: 'Ruby', body: 'Description-4'},
+        {id: 6, title: 'PHP', body: 'Description-5'}
     ])
 
-    const [posts1, setPosts1] = useState([
-        {id: 4, title: 'Python', body: 'Description-3'},
-        {id: 5, title: 'PHP', body: 'Description-4'},
-        {id: 6, title: 'Ruby', body: 'Description-5'}
-    ])
 
     /* Объект с постами */
-    const [post, setPost] = useState({
-        title: '',
-        body: ''
-    });
+    const [post, setPost] = useState({title: '', body: ''});
 
-    /* Создаём новый пост и добавляем его в массив */
-    const addNewPost = (e) => {
-        e.preventDefault() // предотвращаем дефолтное поведение бразура (submit у формы)
-
-        /* созданный объект добавляем в массив постов. Передаём новый массив, куда разворачиваем старый массив и в конец добавляем новый пост */
-        setPosts([...posts, {...post, id: Date.now()}])
-
-        /* Обнуляем инпуты после создания поста */
-        setPost({title: '', body: ''})
-
-    }
 
     /* Получение данных из неуправляемого инпута (useRef) */
    // const bodyInputRef = useRef() // с помощью useRef получаем доступ к DOM и забираем value
+
+   /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
+   const createPost = (newPost) => {
+        setPosts([...posts, newPost]) // разворачиваем старый массив, в конец добавляя новый пост
+   }
+
+   /* Удаление постов. Получаем post из дочернего компонента */
+   const removePost = (post) => { // из массива постов необходимо удалить тот, который мы передали аргументом.
+   // filter возвращает новый массив по отфильтрованному условию.
+        setPosts(posts.filter( p => p.id !== post.id )) // если ID элемента из массива = равен ID переданному нами постом, то удаляем его.
+   }
 
   return (
         <div className="App">
            <Header />
             <div className="content">
                 <ClassCounter /> <br />
-                <form>
-                    {/* Управляемый компонент / двустороннее связывание*/}
-                     {/* onChange - Отслеживаем вводимые пользователем в инпут значения. Из event достаём значение и помещаем его в состояние */}
-                     {/* setPost - передаём объект, в который разворачиваем старый пост, перезатирая нужно поле в этом инпуте (title для 1 инпута и body для второго) */}
-                    <MyInput
-                        value={post.title}
-                        onChange = {e => setPost({...post, title: e.target.value })}
-                        type="text"
-                        placeholder="Название поста"
-                    />
+                <PostForm create={createPost} /> <br />
 
-                    {/* Управляемый компонент / двустороннее связывание */}
-                    {/* setBody - функция, меняющая состояние */}
-                   <MyInput
-                       value={post.body}
-                       onChange = {e => setPost({...post, body: e.target.value })}
-                       type="text"
-                       placeholder="Описание поста"
-                   />
-
-
-                    <MyButton onClick={addNewPost}>Создать пост</MyButton> {/* При клике вызов функции addNewPost */}
-                </form> <br />
-                <PostList posts={posts} title={"Посты про Frontend"} /> <br />
-                <PostList posts={posts1} title={"Посты про Backend"} /> <br />
+                {/* Условная отрисовка (посты не найдены) */}
+                {posts.length !== 0
+                    ? <PostList remove={removePost} posts={posts} title={"Список постов"} />
+                    : <h2 style={{ textAlign: 'center' }}>Посты не найдены</h2>
+                }
+                <br />
             </div>
             <Footer />
         </div>

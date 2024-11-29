@@ -4,7 +4,7 @@ import PostItem from '../PostItem/PostItem';
 
 /* принимаем список постов, посты принимаем извне через пропсы, но поскольку props - объект,
 то можно из props сразу вытащить нужное для нас поле */
-const PostList = ({ posts, title }) => {
+const PostList = ({ posts, title, remove }) => {
 
     return (
     <>
@@ -16,7 +16,7 @@ const PostList = ({ posts, title }) => {
         {/* Ключи позволяют алгоритмам React наиболее эффективно делать рендеринг
         и перерисовывать только элементы, в которых произошли измнения */}
         {posts.map((post, index) =>
-            <PostItem number={index + 1} post={post} key={post.id} />
+            <PostItem remove={remove} number={index + 1} post={post} key={post.id} />
         )}
     </>
 
