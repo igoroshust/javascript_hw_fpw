@@ -47,17 +47,26 @@ function App() {
         {id: 6, title: 'Ruby', body: 'Description-5'}
     ])
 
-    /* Получение данных из инпута для создания поста (название, описание) */
-    const [title, setTitle] = useState('') // делаем инпут управляемым, связываем value инпута с состоянием title
+    /* Объект с постами */
+    const [post, setPost] = useState({
+        title: '',
+        body: ''
+    });
 
+    /* Создаём новый пост и добавляем его в массив */
     const addNewPost = (e) => {
         e.preventDefault() // предотвращаем дефолтное поведение бразура (submit у формы)
-        console.log('Название поста:', title);
-        console.log('Описание поста:', bodyInputRef.current.value) // current - DOM элемент с полем value
+
+        /* созданный объект добавляем в массив постов. Передаём новый массив, куда разворачиваем старый массив и в конец добавляем новый пост */
+        setPosts([...posts, {...post, id: Date.now()}])
+
+        /* Обнуляем инпуты после создания поста */
+        setPost({title: '', body: ''})
+
     }
 
     /* Получение данных из неуправляемого инпута (useRef) */
-    const bodyInputRef = useRef() // с помощью useRef получаем доступ к DOM и забираем value
+   // const bodyInputRef = useRef() // с помощью useRef получаем доступ к DOM и забираем value
 
   return (
         <div className="App">
@@ -65,17 +74,21 @@ function App() {
             <div className="content">
                 <ClassCounter /> <br />
                 <form>
-                    {/* Управляемый компонент */}
+                    {/* Управляемый компонент / двустороннее связывание*/}
                      {/* onChange - Отслеживаем вводимые пользователем в инпут значения. Из event достаём значение и помещаем его в состояние */}
+                     {/* setPost - передаём объект, в который разворачиваем старый пост, перезатирая нужно поле в этом инпуте (title для 1 инпута и body для второго) */}
                     <MyInput
-                        value={title}
-                        onChange = {e => setTitle(e.target.value)}
+                        value={post.title}
+                        onChange = {e => setPost({...post, title: e.target.value })}
                         type="text"
                         placeholder="Название поста"
                     />
 
+                    {/* Управляемый компонент / двустороннее связывание */}
+                    {/* setBody - функция, меняющая состояние */}
                    <MyInput
-                       ref={bodyInputRef}
+                       value={post.body}
+                       onChange = {e => setPost({...post, body: e.target.value })}
                        type="text"
                        placeholder="Описание поста"
                    />

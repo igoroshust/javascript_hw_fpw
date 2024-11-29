@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PostItem from '../PostItem/PostItem';
 
 
@@ -15,8 +15,8 @@ const PostList = ({ posts, title }) => {
         {/* При создании списка нужно указывать ключ, храняющий уникальное значение (id объекта, как правило) */}
         {/* Ключи позволяют алгоритмам React наиболее эффективно делать рендеринг
         и перерисовывать только элементы, в которых произошли измнения */}
-        {posts.map(post =>
-            <PostItem post={post} key={post.id} />
+        {posts.map((post, index) =>
+            <PostItem number={index + 1} post={post} key={post.id} />
         )}
     </>
 
