@@ -10,6 +10,7 @@ import PostItem from "./components/PostItem/PostItem";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
 import MySelect from "./components/UI/Select/MySelect";
+import MyInput from "./components/UI/Input/MyInput";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
 import "./styles/App.css";
@@ -50,12 +51,22 @@ function App() {
 
 
     /* Состояние селекта */
-    const [selectedSort, setSelectedSort] = useState('')
+    const [selectedSort, setSelectedSort] = useState('') // сортировка
+    const [searchQuery, setSearchQuery] = useState('') // поиск
+
+    function getSortedPosts() {
+        console.log('Отработала функция sortedPosts') // отслеживаем вызов функции
+        if(selectedSort) { // если строка не пустая
+            return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort])) // возвращаем отсортированный массив
+        }
+        return posts; // обычный массив постов
+    }
+
+    const sortedPosts = getSortedPosts()
+
     // сортировка массива
     const sortPosts = (sort) => {
         setSelectedSort(sort);
-        // сравниваем поле из объекта А с Б. На основании сравнения сортируем массив
-        setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort]))) // передаём отсортированный массив
     }
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
@@ -79,6 +90,12 @@ function App() {
 
                 {/* Сортировка постов. В onChange передаём то, что приходит из самого селекта  */}
                 <div>
+                    <MyInput
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder="Поиск..."
+                     />
+
                     <MySelect
                         value={selectedSort}
                         onChange={sortPosts}
@@ -93,7 +110,7 @@ function App() {
 
                 {/* Условная отрисовка (посты не найдены) */}
                 {posts.length !== 0
-                    ? <PostList remove={removePost} posts={posts} title={"Список постов"} />
+                    ? <PostList remove={removePost} posts={sortedPosts} title={"Список постов"} />
                     : <h2 style={{ textAlign: 'center' }}>Посты не найдены</h2>
                 }
                 <br />
