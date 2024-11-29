@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import PostItem from "./components/PostItem/PostItem";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
+import MySelect from "./components/UI/Select/MySelect";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
 import "./styles/App.css";
@@ -48,8 +49,14 @@ function App() {
     const [post, setPost] = useState({title: '', body: ''});
 
 
-    /* Получение данных из неуправляемого инпута (useRef) */
-   // const bodyInputRef = useRef() // с помощью useRef получаем доступ к DOM и забираем value
+    /* Состояние селекта */
+    const [selectedSort, setSelectedSort] = useState('')
+    // сортировка массива
+    const sortPosts = (sort) => {
+        setSelectedSort(sort);
+        // сравниваем поле из объекта А с Б. На основании сравнения сортируем массив
+        setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort]))) // передаём отсортированный массив
+    }
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
@@ -68,6 +75,21 @@ function App() {
             <div className="content">
                 <ClassCounter /> <br />
                 <PostForm create={createPost} /> <br />
+                <hr style={{ margin: '15px 0' }} />
+
+                {/* Сортировка постов. В onChange передаём то, что приходит из самого селекта  */}
+                <div>
+                    <MySelect
+                        value={selectedSort}
+                        onChange={sortPosts}
+                        defaultValue="Сортировка"
+                        options={[
+                            {value: 'title', name: 'По названию'},
+                            {value: 'body', name: 'По описанию'},
+                        ]}
+                    />
+                </div>
+
 
                 {/* Условная отрисовка (посты не найдены) */}
                 {posts.length !== 0
