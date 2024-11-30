@@ -1,5 +1,6 @@
 import React from "react";
 import PostItem from '../PostItem/PostItem';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 
 /* принимаем список постов, посты принимаем извне через пропсы, но поскольку props - объект,
@@ -22,9 +23,18 @@ const PostList = ({ posts, title, remove }) => {
         {/* При создании списка нужно указывать ключ, храняющий уникальное значение (id объекта, как правило) */}
         {/* Ключи позволяют алгоритмам React наиболее эффективно делать рендеринг
         и перерисовывать только элементы, в которых произошли измнения */}
+
+        <TransitionGroup>
         {posts.map((post, index) =>
-            <PostItem remove={remove} number={index + 1} post={post} key={post.id} />
+            <CSSTransition
+                key={post.id}
+                timeout={500}
+                classNames="post"
+            >
+            <PostItem remove={remove} number={index + 1} post={post} />
+            </CSSTransition>
         )}
+        </TransitionGroup>
     </>
 
     );

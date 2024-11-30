@@ -6,7 +6,7 @@
 
 .content {
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 20px 20px;
 }
 
 .counter {
@@ -20,7 +20,26 @@
     border: 2px solid teal;
     margin-top: 15px;
 
-    /* Переносим кнопку в правый угол */
+    /* Переносим кнопку "удалить" в правый угол */
     justify-content: space-between;
     align-items: center;
+}
+
+/* CSS-анимация (удаление кнопки) */
+.post-enter {
+    transform: translateX(-350px); /* начало анимации */
+}
+
+.post-enter-active {
+    transform: translateX(0px); /* активная анимация */
+    transition: all 500ms ease-in;
+}
+
+.post-exit {
+    opacity: 1;
+}
+
+.post-exit-active {
+    transform: translateX(-150px);
+    transition: all 500ms ease-in;
 }

@@ -12,6 +12,8 @@ import PostForm from "./components/PostForm/PostForm";
 import PostFilter from "./components/PostFilter/PostFilter";
 import MySelect from "./components/UI/Select/MySelect";
 import MyInput from "./components/UI/Input/MyInput";
+import MyButton from "./components/UI/Button/MyButton";
+import MyModal from "./components/UI/Modal/MyModal";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
 import "./styles/App.css";
@@ -50,6 +52,9 @@ function App() {
     /* Объект с постами */
     const [post, setPost] = useState({title: '', body: ''});
 
+    /* Состояние видимости модального окна создания поста (для динамического управления) */
+    const [modal, setModal] = useState(false);
+
 
     /* Состояние селекта */
     const [filter, setFilter] = useState({sort: '', query: ''})
@@ -72,6 +77,7 @@ function App() {
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
         setPosts([...posts, newPost]) // разворачиваем старый массив, в конец добавляя новый пост
+        setModal(false) // скрываем модальное окно после создания поста
    }
 
    /* Удаление постов. Получаем post из дочернего компонента */
@@ -84,8 +90,12 @@ function App() {
         <div className="App">
            <Header />
             <div className="content">
-                <ClassCounter /> <br />
-                <PostForm create={createPost} /> <br />
+                <MyButton onClick={() => setModal(true)}>
+                    Создать пост
+                </MyButton>
+                <MyModal visible={modal} setVisible={setModal}>
+                    <PostForm create={createPost} />
+                </MyModal> <br />
                 <hr style={{ margin: '15px 0' }} />
 
                 {/* Сортировка постов. В onChange передаём то, что приходит из самого селекта  */}
@@ -105,6 +115,7 @@ function App() {
 export default App;
 
 /* Список компонентов для импорта
+                       <ClassCounter /> <br />
          <nav>
           <Link to="/home">Home</Link>
           <Link to="/users">Users</Link>
