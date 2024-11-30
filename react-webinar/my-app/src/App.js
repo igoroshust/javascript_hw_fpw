@@ -8,9 +8,11 @@ import PostFilter from "./components/PostFilter/PostFilter";
 import MyButton from "./components/UI/Button/MyButton";
 import MyModal from "./components/UI/Modal/MyModal";
 import Loader from "./components/UI/Loader/Loader";
+import Pagination from "./components/UI/Pagination/Pagination";
 import PostService from "./API/PostService";
 import { usePosts } from "./hooks/usePosts";
 import { useFetching } from "./hooks/useFetching";
+import { getPageCount, getPagesArray } from './utils/pages';
 import "./styles/App.css";
 // import { Link } from 'react-router-dom';
 // import Main from "./components/Main/Main";
@@ -46,10 +48,21 @@ function App() {
     /* Состояние с массивом постов */
     const [posts, setPosts] = useState([])
 
+    /* Состояние с общим количеством постов (из API ответа со стороны сервера) */
+    const [totalPages, setTotalPages] = useState(0); // храним общее количество страниц
+
+    /* Состояние для лимита и номера страницы */
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
+
+
     /* Обработка индикации загрузки, обработка ошибки запроса на получения данных */
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll(); // получаем посты с сервера
-        setPosts(posts) // возвращает массив из 3 элементов (которыми мы можем управлять внутри любого компонента)
+        const response = await PostService.getAll(limit, page); // получаем посты с сервера
+        setPosts(response.data) // возвращает массив из 3 элементов (которыми мы можем управлять внутри любого компонента)
+        const totalCount = response.headers['x-total-count']
+        setTotalPages(getPageCount(totalCount, limit));
+        // поделив общее количество постов на лимит получаем количество страниц
     })
 
     /* Объект с постами */
@@ -67,7 +80,7 @@ function App() {
     /* Подгружаем посты при первичной загрузки странцы */
     useEffect(() => {
         fetchPosts()
-    }, []) // массив зависимостей пустой, чтобы функция отработала лишь единожды
+    }, [page]) // массив зависимостей пустой, чтобы функция отработала лишь единожды
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
@@ -75,7 +88,20 @@ function App() {
         setModal(false) // скрываем модальное окно после создания поста
    }
 
-   /* Функция отправления запроса на сервер, получение данных и помещение их в состояние с постами */
+   /* Удаление постов. Получаем post из дочернего компонента */
+   const removePost = (post) => { // из массива постов необходимо удалить тот, который мы передали аргументом.
+   // filter возвращает новый массив по отфильтрованному условию.
+        setPosts(posts.filter( p => p.id !== post.id )) // если ID элемента из массива = равен ID переданному нами постом, то удаляем его.
+   }
+
+
+   /* Функция, изменяющая номер страницы, и с этим сразу же подгружающая новую порцию данных */
+   const changePage = (page) => {
+        setPage(page)
+   }
+
+
+    /* Функция отправления запроса на сервер, получение данных и помещение их в состояние с постами */
 //   async function fetchPosts() {
 //        setIsPostsLoading(true) // перед отправкой запроса активируем Loader
 //        const posts = await PostService.getAll(); // getAll() возвращает список постов
@@ -85,13 +111,6 @@ function App() {
 ////       console.log(response); // ответ
 ////        console.log(response.data);  // массив постов
 //    }
-
-
-   /* Удаление постов. Получаем post из дочернего компонента */
-   const removePost = (post) => { // из массива постов необходимо удалить тот, который мы передали аргументом.
-   // filter возвращает новый массив по отфильтрованному условию.
-        setPosts(posts.filter( p => p.id !== post.id )) // если ID элемента из массива = равен ID переданному нами постом, то удаляем его.
-   }
 
   return (
         <div className="App">
@@ -123,6 +142,9 @@ function App() {
                         ? <div style={{ display: 'flex', justifyContent: 'center' }}><Loader /></div>
                         : <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
                  } <br />
+
+                 {/* Отрисовываем кнопку для постраничного вывода постов */}
+                 <Pagination page={page} changePage={changePage} totalPages={totalPages} />
             </div>
             <Footer />
         </div>

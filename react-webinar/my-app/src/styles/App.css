@@ -43,3 +43,21 @@
     transform: translateX(-150px);
     transition: all 500ms ease-in;
 }
+
+/* Пагинация */
+
+.page__wrapper {
+    display: flex;
+}
+
+.page {
+    padding: 10px;
+    border: 1px solid teal;
+    cursor: pointer;
+}
+
+.page__current {
+    background-color: teal;
+    color: #fff;
+    font-weight: bold;
+}
