@@ -10,6 +10,7 @@ import MyModal from "./components/UI/Modal/MyModal";
 import Loader from "./components/UI/Loader/Loader";
 import PostService from "./API/PostService";
 import { usePosts } from "./hooks/usePosts";
+import { useFetching } from "./hooks/useFetching";
 import "./styles/App.css";
 // import { Link } from 'react-router-dom';
 // import Main from "./components/Main/Main";
@@ -45,8 +46,11 @@ function App() {
     /* Состояние с массивом постов */
     const [posts, setPosts] = useState([])
 
-    /* Создаём Loader */
-    const [isPostsLoading, setIsPostsLoading] = useState(false);
+    /* Обработка индикации загрузки, обработка ошибки запроса на получения данных */
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+        const posts = await PostService.getAll(); // получаем посты с сервера
+        setPosts(posts) // возвращает массив из 3 элементов (которыми мы можем управлять внутри любого компонента)
+    })
 
     /* Объект с постами */
     const [post, setPost] = useState({title: '', body: ''});
@@ -72,15 +76,15 @@ function App() {
    }
 
    /* Функция отправления запроса на сервер, получение данных и помещение их в состояние с постами */
-   async function fetchPosts() {
-        setIsPostsLoading(true) // перед отправкой запроса активируем Loader
-        const posts = await PostService.getAll(); // getAll() возвращает список постов
-        setPosts(posts); // получаем 100 постов
-        setIsPostsLoading(false) // после получения постов убираем loader
-
-//       console.log(response); // ответ
-//        console.log(response.data);  // массив постов
-   }
+//   async function fetchPosts() {
+//        setIsPostsLoading(true) // перед отправкой запроса активируем Loader
+//        const posts = await PostService.getAll(); // getAll() возвращает список постов
+//        setPosts(posts); // получаем 100 постов
+//        setIsPostsLoading(false) // после получения постов убираем loader
+//
+////       console.log(response); // ответ
+////        console.log(response.data);  // массив постов
+//    }
 
 
    /* Удаление постов. Получаем post из дочернего компонента */
@@ -109,6 +113,11 @@ function App() {
                     filter={filter}
                     setFilter={setFilter}
                 /> <br />
+
+                {/* Вывод ошибки при некорректном запросе (api) */}
+                {postError &&
+                    <h1>Произошла ошибка ${postError}</h1>
+                }
 
                 {isPostsLoading
                         ? <div style={{ display: 'flex', justifyContent: 'center' }}><Loader /></div>
