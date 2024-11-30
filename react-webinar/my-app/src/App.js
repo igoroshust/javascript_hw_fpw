@@ -1,22 +1,23 @@
-import React, { useState, useMemo, useRef } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
 import Header from "./components/Header/Header";
-import Main from "./components/Main/Main";
-import Link1 from "./components/Link1/Link1";
-import Counter from "./components/Counter/Counter";
-import ClassCounter from "./components/Counter/ClassCounter";
 import Footer from "./components/Footer/Footer";
-import PostItem from "./components/PostItem/PostItem";
 import PostList from "./components/PostList/PostList";
 import PostForm from "./components/PostForm/PostForm";
 import PostFilter from "./components/PostFilter/PostFilter";
-import MySelect from "./components/UI/Select/MySelect";
-import MyInput from "./components/UI/Input/MyInput";
 import MyButton from "./components/UI/Button/MyButton";
 import MyModal from "./components/UI/Modal/MyModal";
+import { usePosts } from "./hooks/usePosts";
+import "./styles/App.css";
+// import { Link } from 'react-router-dom';
+// import Main from "./components/Main/Main";
+// import Link1 from "./components/Link1/Link1";
+// import Counter from "./components/Counter/Counter";
+// import ClassCounter from "./components/Counter/ClassCounter";
+// import PostItem from "./components/PostItem/PostItem";
+// import MySelect from "./components/UI/Select/MySelect";
+// import MyInput from "./components/UI/Input/MyInput";
 // import Home from "./components/Home/Home";
 // import Users from "./components/Users/Users";
-import "./styles/App.css";
 
 /*
 // Swagger
@@ -55,24 +56,11 @@ function App() {
     /* Состояние видимости модального окна создания поста (для динамического управления) */
     const [modal, setModal] = useState(false);
 
-
     /* Состояние селекта */
     const [filter, setFilter] = useState({sort: '', query: ''})
 
-    const sortedPosts = useMemo(() => {
-        console.log('Отработала функция sortedPosts') // отслеживаем вызов функции
-        if(filter.sort) { // если строка не пустая
-            return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort])) // возвращаем отсортированный массив
-        }
-        return posts; // обычный массив постов
-
-    }, [filter.sort, posts]) // callback(возвращ. результат вычислений) и массив зависимостей (deps). callback вызывается, если хоть одна из зависимостей поменяет значение
-
-    /* Поиск (на основании отсортированного массива) */
-    const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-    }, [filter.query, sortedPosts]) // в массив зависимостей попадает поисковая строка и отсортированный массив
-
+    /* Отсортированный и отфильтрованный список */
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
