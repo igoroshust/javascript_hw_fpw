@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import PostList from "./components/PostList/PostList";
@@ -6,6 +7,8 @@ import PostForm from "./components/PostForm/PostForm";
 import PostFilter from "./components/PostFilter/PostFilter";
 import MyButton from "./components/UI/Button/MyButton";
 import MyModal from "./components/UI/Modal/MyModal";
+import Loader from "./components/UI/Loader/Loader";
+import PostService from "./API/PostService";
 import { usePosts } from "./hooks/usePosts";
 import "./styles/App.css";
 // import { Link } from 'react-router-dom';
@@ -40,15 +43,10 @@ ui.initOAuth({
 function App() {
 
     /* Состояние с массивом постов */
-    const [posts, setPosts] = useState([
-        {id: 1, title: 'JavaScript', body: 'Description'},
-        {id: 2, title: 'HTML', body: 'Description-1'},
-        {id: 3, title: 'CSS', body: 'Description-2'},
-        {id: 4, title: 'Python', body: 'Description-3'},
-        {id: 5, title: 'Ruby', body: 'Description-4'},
-        {id: 6, title: 'PHP', body: 'Description-5'}
-    ])
+    const [posts, setPosts] = useState([])
 
+    /* Создаём Loader */
+    const [isPostsLoading, setIsPostsLoading] = useState(false);
 
     /* Объект с постами */
     const [post, setPost] = useState({title: '', body: ''});
@@ -62,11 +60,28 @@ function App() {
     /* Отсортированный и отфильтрованный список */
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
+    /* Подгружаем посты при первичной загрузки странцы */
+    useEffect(() => {
+        fetchPosts()
+    }, []) // массив зависимостей пустой, чтобы функция отработала лишь единожды
+
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
         setPosts([...posts, newPost]) // разворачиваем старый массив, в конец добавляя новый пост
         setModal(false) // скрываем модальное окно после создания поста
    }
+
+   /* Функция отправления запроса на сервер, получение данных и помещение их в состояние с постами */
+   async function fetchPosts() {
+        setIsPostsLoading(true) // перед отправкой запроса активируем Loader
+        const posts = await PostService.getAll(); // getAll() возвращает список постов
+        setPosts(posts); // получаем 100 постов
+        setIsPostsLoading(false) // после получения постов убираем loader
+
+//       console.log(response); // ответ
+//        console.log(response.data);  // массив постов
+   }
+
 
    /* Удаление постов. Получаем post из дочернего компонента */
    const removePost = (post) => { // из массива постов необходимо удалить тот, который мы передали аргументом.
@@ -78,6 +93,9 @@ function App() {
         <div className="App">
            <Header />
             <div className="content">
+                <button onClick={fetchPosts}>
+                    GET POSTS
+                </button>
                 <MyButton onClick={() => setModal(true)}>
                     Создать пост
                 </MyButton>
@@ -90,10 +108,12 @@ function App() {
                 <PostFilter
                     filter={filter}
                     setFilter={setFilter}
-                />
+                /> <br />
 
-                <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
-                <br />
+                {isPostsLoading
+                        ? <div style={{ display: 'flex', justifyContent: 'center' }}><Loader /></div>
+                        : <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
+                 } <br />
             </div>
             <Footer />
         </div>
@@ -113,4 +133,14 @@ export default App;
             <Main name="Не буквы"/>
             <Main name="Снова буквы"/>
             <Footer />
+*/
+
+/*
+        {id: 1, title: 'JavaScript', body: 'Description'},
+        {id: 2, title: 'HTML', body: 'Description-1'},
+        {id: 3, title: 'CSS', body: 'Description-2'},
+        {id: 4, title: 'Python', body: 'Description-3'},
+        {id: 5, title: 'Ruby', body: 'Description-4'},
+        {id: 6, title: 'PHP', body: 'Description-5'}
+
 */
