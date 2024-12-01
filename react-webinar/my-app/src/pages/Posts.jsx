@@ -85,7 +85,6 @@ function Posts() {
 
   return (
         <div className="App">
-           <Header />
             <div className="content">
                 <button onClick={fetchPosts}>
                     GET POSTS
@@ -117,7 +116,6 @@ function Posts() {
                  {/* Отрисовываем кнопку для постраничного вывода постов */}
                  <Pagination page={page} changePage={changePage} totalPages={totalPages} />
             </div>
-            <Footer />
         </div>
   );
 }
@@ -125,7 +123,8 @@ function Posts() {
 export default Posts;
 
 /* Список компонентов для импорта
-                       <ClassCounter /> <br />
+       <Header />
+       <ClassCounter /> <br />
          <nav>
           <Link to="/home">Home</Link>
           <Link to="/users">Users</Link>
