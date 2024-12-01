@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/App.css";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/UI/Navbar/Navbar";
 import AppRouter from "./components/AppRouter/AppRouter";
-import {AuthContext} from "./context/context";
+import { AuthContext } from "./context/context";
 
 /*
 // Swagger
@@ -25,12 +25,25 @@ ui.initOAuth({
 
 function App() {
 
+    /* Тип авторизации пользователя */
     const [isAuth, setIsAuth] = useState(false);
+
+    /* Состояние для запроса на сервер (чтобы при обновлении страницы posts/id не вылетало) */
+    const [isLoading, setLoading] = useState(true);
+
+    /* Сохраняем, авторизован пользователь, или нет */
+    useEffect(() => {
+        if(localStorage.getItem('auth')) {
+            setIsAuth(true)
+        }
+        setLoading(false)
+    }, [])
 
     return (
         <AuthContext.Provider value={{
             isAuth,
-            setIsAuth
+            setIsAuth,
+            isLoading
         }} >
          <BrowserRouter>
            <Navbar />
