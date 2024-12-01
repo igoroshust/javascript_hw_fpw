@@ -51,7 +51,6 @@ const PostIdPage = () => {
                         </div>
                     )}
                 </div>
-
             }
         </div>
     );
