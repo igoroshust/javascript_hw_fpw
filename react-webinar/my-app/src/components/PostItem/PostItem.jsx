@@ -1,9 +1,12 @@
 import React from "react";
 import MyButton from '../UI/Button/MyButton';
+import { useNavigate } from "react-router-dom";
 
 /* props - входные данные. Аргумент функции, куда можно передавать что-то извне. */
 
 const PostItem = (props) => {
+
+    const navigate = useNavigate();
 
     return (
         <div className="post">
@@ -15,6 +18,9 @@ const PostItem = (props) => {
             </div>
 
             <div className="post__btns">
+               <MyButton onClick={() => navigate(`/posts/${props.post.id}`)}>  {/* ПО ID пост удаляется из массива */}
+                    Открыть
+                </MyButton>
                 <MyButton onClick={() => props.remove(props.post)}>  {/* ПО ID пост удаляется из массива */}
                     Удалить
                 </MyButton>

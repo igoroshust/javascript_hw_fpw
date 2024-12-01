@@ -21,6 +21,8 @@
     text-align: center;
 }
 
+/* Карточка поста */
+
 .post {
     display: flex;
     padding: 15px;
@@ -49,6 +51,10 @@
 .post-exit-active {
     transform: translateX(-150px);
     transition: all 500ms ease-in;
+}
+
+.post__btns {
+    display: flex;
 }
 
 /* Пагинация */
