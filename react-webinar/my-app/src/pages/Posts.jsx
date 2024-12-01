@@ -6,12 +6,14 @@ import PostList from "../components/PostList/PostList";
 import PostForm from "../components/PostForm/PostForm";
 import PostFilter from "../components/PostFilter/PostFilter";
 import MyButton from "../components/UI/Button/MyButton";
+import MySelect from "../components/UI/Select/MySelect";
 import MyModal from "../components/UI/Modal/MyModal";
 import Loader from "../components/UI/Loader/Loader";
 import Pagination from "../components/UI/Pagination/Pagination";
 import PostService from "../API/PostService";
 import { usePosts } from "../hooks/usePosts";
 import { useFetching } from "../hooks/useFetching";
+import { useObserver } from "../hooks/useObserver";
 import { getPageCount, getPagesArray } from '../utils/pages';
 
 function Posts() {
@@ -52,27 +54,14 @@ function Posts() {
     /* Ссылка на DOM-элемент, последний в списке */
     const lastElement = useRef() // когда элемент в зоне видимости бразура, подгружаем новую порцию данных
 
-    /* Доступ к observer внутри копмонента (получение доступа к DOM-элементу, сохранение данных) */
-    const observer = useRef();
-
-    /* Массив зависимостей для Lazy Load. Каждый раз, когда div появляется в зоне видимости, отрабатывает этот callback */
-    useEffect(() => {
-        if(isPostsLoading) return;
-        if(observer.current) observer.current.disconnect() // если observer создан и в current что-то находится, то отключаем наблюдение за всеми элементами
-        var callback = function (entries, observer) {
-           if(entries[0].isIntersecting && page < totalPages) {
-                console.log(page)
-                setPage(page + 1)
-           }
-        };
-        observer.current = new IntersectionObserver(callback);
-        observer.current.observe(lastElement.current) // за каким DOM-элементом наблюдаем
-    }, [isPostsLoading])
+    useObserver(lastElement, page < totalPages, isPostsLoading, () => {
+        setPage(page + 1);
+    });
 
     /* Подгружаем посты при первичной загрузки странцы */
     useEffect(() => {
-        fetchPosts()
-    }, [page]) // массив зависимостей пустой, чтобы функция отработала лишь единожды
+        fetchPosts(limit, page)
+    }, [page, limit]) // массив зависимостей пустой, чтобы функция отработала лишь единожды
 
    /* Создание поста. Вход - новый созданный пост из PostForm. Затем изменяем состояние */
    const createPost = (newPost) => {
@@ -110,9 +99,11 @@ function Posts() {
                 <button onClick={fetchPosts}>
                     GET POSTS
                 </button>
+
                 <MyButton onClick={() => setModal(true)}>
                     Создать пост
                 </MyButton>
+
                 <MyModal visible={modal} setVisible={setModal}>
                     <PostForm create={createPost} />
                 </MyModal> <br />
@@ -123,6 +114,20 @@ function Posts() {
                     filter={filter}
                     setFilter={setFilter}
                 /> <br />
+
+                {/* Работа с лимитом */}
+                <MySelect
+                    value={limit}
+                    onChange={value => setLimit(value)}
+                    defaultValue="Количество элементов на странице"
+                    options={[
+                        {value: 5, name: '5'},
+                        {value: 10, name: '10'},
+                        {value: 25, name: '25'},
+                        {value: -1, name: 'Показать всё'},
+                    ]}
+                />
+
 
                 {/* Вывод ошибки при некорректном запросе (api) */}
                 {postError &&
