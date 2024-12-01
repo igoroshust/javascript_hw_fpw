@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -30,7 +30,8 @@ function Posts() {
     /* Обработка индикации загрузки, обработка ошибки запроса на получения данных */
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page); // получаем посты с сервера
-        setPosts(response.data) // возвращает массив из 3 элементов (которыми мы можем управлять внутри любого компонента)
+         // возвращает массив из 3 элементов (которыми мы можем управлять внутри любого компонента)
+        setPosts([...posts, ...response.data]) // добавляем данные в конец страницы для lazy load
         const totalCount = response.headers['x-total-count']
         setTotalPages(getPageCount(totalCount, limit));
         // поделив общее количество постов на лимит получаем количество страниц
@@ -47,6 +48,26 @@ function Posts() {
 
     /* Отсортированный и отфильтрованный список */
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+
+    /* Ссылка на DOM-элемент, последний в списке */
+    const lastElement = useRef() // когда элемент в зоне видимости бразура, подгружаем новую порцию данных
+
+    /* Доступ к observer внутри копмонента (получение доступа к DOM-элементу, сохранение данных) */
+    const observer = useRef();
+
+    /* Массив зависимостей для Lazy Load. Каждый раз, когда div появляется в зоне видимости, отрабатывает этот callback */
+    useEffect(() => {
+        if(isPostsLoading) return;
+        if(observer.current) observer.current.disconnect() // если observer создан и в current что-то находится, то отключаем наблюдение за всеми элементами
+        var callback = function (entries, observer) {
+           if(entries[0].isIntersecting && page < totalPages) {
+                console.log(page)
+                setPage(page + 1)
+           }
+        };
+        observer.current = new IntersectionObserver(callback);
+        observer.current.observe(lastElement.current) // за каким DOM-элементом наблюдаем
+    }, [isPostsLoading])
 
     /* Подгружаем посты при первичной загрузки странцы */
     useEffect(() => {
@@ -108,9 +129,15 @@ function Posts() {
                     <h1>Произошла ошибка ${postError}</h1>
                 }
 
-                {isPostsLoading
-                        ? <div style={{ display: 'flex', justifyContent: 'center' }}><Loader /></div>
-                        : <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
+                {/* Список постов */}
+                <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
+
+                {/* Lazy Load. lastElement - получение доступа к DOM-элементу */}
+                <div ref={lastElement} style={{ height: 20, background: 'red' }}></div>
+
+                {/* Lazy Load. Чтобы loader не перезатирал список постов */}
+                {isPostsLoading &&
+                   <div style={{display: 'flex', justifyContent: 'center' }}><Loader /></div>
                  } <br />
 
                  {/* Отрисовываем кнопку для постраничного вывода постов */}
