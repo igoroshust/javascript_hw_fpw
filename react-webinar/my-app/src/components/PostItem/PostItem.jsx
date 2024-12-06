@@ -18,7 +18,7 @@ const PostItem = (props) => {
             </div>
 
             <div className="post__btns">
-               <MyButton onClick={() => navigate(`/posts/${props.post.id}`)}>  {/* ПО ID пост удаляется из массива */}
+               <MyButton onClick={() => navigate(`/posts/${props.post.id}`)}>
                     Открыть
                 </MyButton>
                 <MyButton onClick={() => props.remove(props.post)}>  {/* ПО ID пост удаляется из массива */}

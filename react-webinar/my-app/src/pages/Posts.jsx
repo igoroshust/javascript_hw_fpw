@@ -138,7 +138,7 @@ function Posts() {
                 <PostList remove={removePost} posts={sortedAndSearchedPosts} title={"Список постов"} />
 
                 {/* Lazy Load. lastElement - получение доступа к DOM-элементу */}
-                <div ref={lastElement} style={{ height: 20, background: 'red' }}></div>
+                <div ref={lastElement} style={{ height: 20 }}></div>
 
                 {/* Lazy Load. Чтобы loader не перезатирал список постов */}
                 {isPostsLoading &&
