@@ -43,7 +43,7 @@ export default class Posts extends Component {
     /* Функция для лайка */
     setLike(post) {
         postService.setLikePost(post.id) /* Говорим серверу, что лайк поставлен (ответ не ждём) */
-        post.likesCount += 1 /* Добавляем лайк */
+        post.likeCount += 1 /* Добавляем лайк */
         this.forceUpdate() /* Рисуем интерфейс снова функцией forceUpdate */
     }
 
@@ -53,8 +53,8 @@ export default class Posts extends Component {
                 {this.state.data.map(post =>
                     <div id={'post_' + post.id}>
                         <p>{post.text}</p>
-                        <button onClick={() => this.setLike(post)}>{ post.likesCount }</button>
-                        <p>Date: post: {post.date}</p>
+                        <button onClick={() => this.setLike(post)}>{ post.likeCount }</button>
+                        <p>Date: {post.dat}</p>
                         <hr />
                     </div>
         )}
