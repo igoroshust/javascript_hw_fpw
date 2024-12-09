@@ -12,7 +12,7 @@ export default class Posts extends Component {
         }
 
         this.handleChange = this.handleChange.bind(this); /* изменение поля ввода */
-        this.handleChange = this.handleSubmit.bind(this); /* нажатие на клавишу подтверждения отправки поста */
+        this.handleSubmit = this.handleSubmit.bind(this); /* нажатие на клавишу подтверждения отправки поста */
     }
 
     /* Обработчик события (измение поля ввода) */
@@ -23,10 +23,9 @@ export default class Posts extends Component {
     /* Обработчик события (отправка поста) */
     handleSubmit(event) {
         postService.createPost({'text': this.state.inputValue}); /* По нажатию подтверждения отправляем inputValue в createPost() */
-        this.getData() /* Подгружаем посты заного */
-        this.setState({inputValue : ''}) /* Ставим поле ввода пустым */
+        this.getData() /* Подгружаем посты заново */
+        this.setState({inputValue : ''}); /* Ставим поле ввода пустым */
     }
-
 
     /* Получение данных с сервера и обработка события подключения компонента */
     getData() {
@@ -54,7 +53,7 @@ export default class Posts extends Component {
                     <div id={'post_' + post.id}>
                         <p>{post.text}</p>
                         <button onClick={() => this.setLike(post)}>{ post.likeCount }</button>
-                        <p>Date: {post.dat}</p>
+                        <p>Date: {post.date}</p>
                         <hr />
                     </div>
         )}

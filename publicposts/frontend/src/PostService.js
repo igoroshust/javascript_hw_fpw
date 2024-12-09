@@ -2,11 +2,11 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000';
 
-export default class PostService{
+export default class PostService {
     constructor(){}
 
     getPosts(){
-        const url = `${API_URL}/api/posts`; /* получение всех постов */
+        const url = `${API_URL}/api/posts/`; /* получение всех постов */
         return axios.get(url).then(response => response.data); /* разбираем ответ, возвращаем data */
     }
 
@@ -16,7 +16,7 @@ export default class PostService{
     }
 
     createPost(text){
-        const url = `${API_URL}/api/posts`;
+        const url = `${API_URL}/api/posts/`;
         return axios.post(url, text);
     }
 }

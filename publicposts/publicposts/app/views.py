@@ -18,7 +18,7 @@ def posts(request):
         post = Post()
         post.text = request.data['text']
         post.save()
-        return response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 # метод для того, чтобы поставить лайк
@@ -26,10 +26,10 @@ def posts(request):
 def like_post(request, post_id):
     if request.method == 'GET':
         try:
-            post = Post.objects.get(id = post_id)
+            post = Post.objects.get(id=post_id)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         setattr(post, 'likeCount', post.likeCount+1) # получаем объект Post с необходимым id, прибавляем 1 лайк
         post.save() # сохраняем объект
-        return Response(post.likesCount, status.HTTP_200_OK) # возвращаем количество лайков
+        return Response(post.likeCount, status.HTTP_200_OK) # возвращаем количество лайков
